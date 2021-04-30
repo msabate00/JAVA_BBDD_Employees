@@ -67,7 +67,14 @@ public class Controller {
             public void handle(ActionEvent t) {
 
                 try {
-                    view.ActualizarCenter(bbdd.findByName(view.getTopPane().getBuscaName().getText()));
+                    String[][] aux = bbdd.findByName(view.getTopPane().getBuscaName().getText());
+                    if (aux.length == 0) {
+                        if (dialog != null && dialog.getStage().isShowing()) {
+                            dialog.getStage().close();
+                        }
+                        dialog = new ErrorPopup("NO SE A ENCONTRADO NINGUN RESULTADO");
+                    }
+                    view.ActualizarCenter(aux);
                 } catch (SQLException ex) {
                     Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
                 }

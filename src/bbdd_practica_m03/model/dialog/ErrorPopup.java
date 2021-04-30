@@ -6,6 +6,7 @@
 package bbdd_practica_m03.model.dialog;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -27,6 +28,7 @@ public class ErrorPopup extends Dialog{
         
         pane.getChildren().add(new Text(error));
         pane.setBackground(new Background(new BackgroundFill(Paint.valueOf("#ffa694"), CornerRadii.EMPTY, Insets.EMPTY)));
+        pane.alignmentProperty().set(Pos.CENTER);
         
         
         Scene dialogScene = new Scene(pane, 400, 100);
