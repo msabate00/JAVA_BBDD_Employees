@@ -187,6 +187,33 @@ public class BaseDeDades {
         disconnect();
         return false;
     }
+    
+    public Boolean update(String id,String[] datos) throws SQLException {
+        connect();
+
+        if (datos.length == 5) {
+
+            PreparedStatement st = connection.prepareStatement("UPDATE employees SET first_name = ?, last_name = ?, gender = ?, hire_date = ? WHERE emp_no = ?");
+            
+
+           
+            st.setString(1, datos[0]);
+            st.setString(2, datos[1]);
+            st.setString(3, datos[2]);
+            st.setString(4, datos[3]);
+            st.setString(5, datos[4]);
+            st.setInt(5, Integer.parseInt(id));
+
+            int files = st.executeUpdate();
+            if (files == 1) {
+                disconnect();
+                return true;
+            }
+        }
+        disconnect();
+        return false;
+
+    }
 
     /**
      * @return the lastrow

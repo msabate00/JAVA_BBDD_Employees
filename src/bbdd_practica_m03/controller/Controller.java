@@ -8,6 +8,7 @@ import bbdd_practica_m03.model.dialog.DeletePopup;
 import bbdd_practica_m03.model.dialog.Dialog;
 import bbdd_practica_m03.model.dialog.ErrorPopup;
 import bbdd_practica_m03.model.dialog.InfoPopup;
+import bbdd_practica_m03.model.dialog.UpdatePopup;
 import bbdd_practica_m03.view.View;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -106,14 +107,33 @@ public class Controller {
     }
 
     private void UpdateController() {
-        for (Icon i : view.getCenterPane().getDeletes()) {
+        /*for (Icon i : view.getCenterPane().getDeletes()) {
             i.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent t) {
                     delete(i.getid());
                 }
             });
-        }
+        }*/
+
+        view.getCenterPane().getDeletes().forEach((i) -> {
+            i.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent t) {
+                    delete(i.getid());
+                }
+            });
+        });
+
+        view.getCenterPane().getEdits().forEach((i) -> {
+            i.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent t) {
+                    update(i.getid(), i.getDatos());
+                }
+            });
+        });
+
     }
 
     private void insertTop() {
@@ -221,7 +241,42 @@ public class Controller {
 
     }
 
-    private void update(String id) {
+    private void update(String id, String[] datos1) {
+
+        if (dialog != null && dialog.getStage().isShowing()) {
+            dialog.getStage().close();
+        }
+        dialog = new UpdatePopup(id, datos1);
+        UpdatePopup aux = (UpdatePopup) dialog;
+
+        aux.getAceptar().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                String[] datos = new String[5];
+                datos[0] = aux.getFirst_name().getText();
+                datos[1] = aux.getLast_name().getText();
+                datos[2] = aux.getGender().getSelectionModel().getSelectedItem().toString();
+                datos[3] = aux.getBirth_date().getValue().toString();
+                datos[4] = aux.getHire_date().getValue().toString();
+                dialog.getStage().close();
+                try {
+                    if (!bbdd.update(id,datos)) {
+                        if (dialog != null && dialog.getStage().isShowing()) {
+                            dialog.getStage().close();
+                        }
+                        dialog = new ErrorPopup("NO SE A PODIDO EDITAR EL EMPLEADO");
+                    } else {
+                        if (dialog != null && dialog.getStage().isShowing()) {
+                            dialog.getStage().close();
+                        }
+                        dialog = new InfoPopup("EL EMPLEADO SE A EDITADO CORRECTAMENTE");
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
 
     }
 

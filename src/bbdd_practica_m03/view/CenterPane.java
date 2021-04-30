@@ -93,7 +93,8 @@ public class CenterPane extends ScrollPane {
                     contadorX++;
                     //  if(j == 0)   System.out.println(contenido[i][0]);
                 }
-                Icon edit = new Icon(this.edit, contenido[i][0]);
+                Icon edit = new Icon(this.edit, contenido[i][0],contenido[i][1],contenido[i][2],contenido[i][3],contenido[i][4],contenido[i][5]);
+               
                 getEdits().add(edit);
                 grid.add(edit, contadorX, contadorY);
                 
