@@ -19,9 +19,12 @@ import javafx.scene.layout.FlowPane;
 public class TopPane extends FlowPane{
      private final TextField buscaName = new TextField();
      private final Button buscaNameBut = new Button("Buscar Nombre");
+     private final Button buscaInsert = new Button("Añadir Empleado");
+     private final Button buscaUpdate = new Button("Actualizar Empleado");
+     private final Button buscaDelete = new Button("Borrar Empleado");
      
      public TopPane(){
-         getChildren().addAll(buscaName, buscaNameBut);
+         getChildren().addAll(buscaName, buscaNameBut, buscaInsert, buscaUpdate, buscaDelete);
      }
 
     /**
@@ -36,6 +39,27 @@ public class TopPane extends FlowPane{
      */
     public Button getBuscaNameBut() {
         return buscaNameBut;
+    }
+
+    /**
+     * @return the buscaInsert
+     */
+    public Button getBuscaInsert() {
+        return buscaInsert;
+    }
+
+    /**
+     * @return the buscaUpdate
+     */
+    public Button getBuscaUpdate() {
+        return buscaUpdate;
+    }
+
+    /**
+     * @return the buscaDelete
+     */
+    public Button getBuscaDelete() {
+        return buscaDelete;
     }
      
 }
