@@ -1,6 +1,7 @@
 package bbdd_practica_m03.controller;
 
 import bbdd_practica_m03.model.BaseDeDades;
+import bbdd_practica_m03.model.Icon;
 import bbdd_practica_m03.model.dialog.InsertPopup;
 import bbdd_practica_m03.model.Model;
 import bbdd_practica_m03.model.dialog.DeletePopup;
@@ -29,6 +30,7 @@ public class Controller {
         this.bbdd = bbdd;
         initView();
         initController();
+        UpdateController();
     }
 
     public void initView() {
@@ -76,6 +78,7 @@ public class Controller {
                         dialog = new ErrorPopup("NO SE A ENCONTRADO NINGUN RESULTADO");
                     }
                     view.ActualizarCenter(aux);
+                    UpdateController();
                 } catch (SQLException ex) {
                     Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -96,10 +99,21 @@ public class Controller {
         view.getTopPane().getBuscaDelete().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                deleteTop();
+                delete();
             }
         });
 
+    }
+
+    private void UpdateController() {
+        for (Icon i : view.getCenterPane().getDeletes()) {
+            i.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent t) {
+                    delete(i.getid());
+                }
+            });
+        }
     }
 
     private void insertTop() {
@@ -141,7 +155,7 @@ public class Controller {
 
     }
 
-    public void deleteTop() {
+    private void delete() {
 
         if (dialog != null && dialog.getStage().isShowing()) {
             dialog.getStage().close();
@@ -170,6 +184,44 @@ public class Controller {
                 }
             }
         });
+
+    }
+
+    private void delete(String id) {
+
+        if (dialog != null && dialog.getStage().isShowing()) {
+            dialog.getStage().close();
+        }
+        dialog = new DeletePopup();
+        DeletePopup aux = (DeletePopup) dialog;
+
+        aux.getId().setText(id);
+
+        aux.getAceptar().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                dialog.getStage().close();
+                try {
+                    if (!bbdd.delete(aux.getId().getText())) {
+                        if (dialog != null && dialog.getStage().isShowing()) {
+                            dialog.getStage().close();
+                        }
+                        dialog = new ErrorPopup("NO SE A PODIDO ELIMINAR AL EMPLEADO");
+                    } else {
+                        if (dialog != null && dialog.getStage().isShowing()) {
+                            dialog.getStage().close();
+                        }
+                        dialog = new InfoPopup("EL EMPLEADO SE A ELIMINADO CORRECTAMENTE");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+
+    }
+
+    private void update(String id) {
 
     }
 

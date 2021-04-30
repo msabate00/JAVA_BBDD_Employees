@@ -5,11 +5,14 @@
  */
 package bbdd_practica_m03.view;
 
+import bbdd_practica_m03.model.Icon;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -21,14 +24,22 @@ import javafx.scene.text.Text;
  */
 public class CenterPane extends ScrollPane {
 
+    
+    private Image delete = new Image(".\\bbdd_practica_m03\\img\\icons\\eliminar.png");
+    private Image edit = new Image(".\\bbdd_practica_m03\\img\\icons\\editar.png");
+    
     GridPane grid = new GridPane();
 
     List<String> columnas;
     Text[][] contenido;
 
     List<Text> columnasNombres;
+    private List<Icon> edits;
+    private List<Icon> deletes;
 
     public CenterPane(List<String> columnas, String[][] contenido) {
+        this.edits = new ArrayList<Icon>();
+        this.deletes = new ArrayList<Icon>();
         this.columnas = columnas;
         //this.contenido = contenido;
         columnasNombres = generarColumnas();
@@ -61,6 +72,7 @@ public class CenterPane extends ScrollPane {
             grid.getColumnConstraints().add(new ColumnConstraints(100));
             contador++;
         }
+        grid.add(new Text("Acciones"), contador, 0);
 
         grid.getRowConstraints().add(new RowConstraints(40));
 
@@ -80,8 +92,15 @@ public class CenterPane extends ScrollPane {
                     grid.add(this.contenido[i][j], contadorX, contadorY);
                     contadorX++;
                     //  if(j == 0)   System.out.println(contenido[i][0]);
-
                 }
+                Icon edit = new Icon(this.edit, contenido[i][0]);
+                getEdits().add(edit);
+                grid.add(edit, contadorX, contadorY);
+                
+                Icon delete = new Icon(this.delete, contenido[i][0]);
+                getDeletes().add(delete);
+                grid.add(delete, contadorX+1, contadorY);
+                
                 if (contenido[i][0] == null) {
                     break;
                 }
@@ -90,6 +109,20 @@ public class CenterPane extends ScrollPane {
             }
         }
 
+    }
+
+    /**
+     * @return the edits
+     */
+    public List<Icon> getEdits() {
+        return edits;
+    }
+
+    /**
+     * @return the deletes
+     */
+    public List<Icon> getDeletes() {
+        return deletes;
     }
 
 }
