@@ -30,7 +30,7 @@ public class InsertPopup extends Dialog {
     private TextField first_name = new TextField();
     private TextField last_name = new TextField();
     private ChoiceBox gender = new ChoiceBox(FXCollections.observableArrayList(
-            "M", "F", "O")
+            "M", "F")
     );
     private DatePicker birth_date = new DatePicker();
     private DatePicker hire_date = new DatePicker();

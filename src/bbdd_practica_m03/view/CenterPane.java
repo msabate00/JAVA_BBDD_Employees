@@ -35,8 +35,6 @@ public class CenterPane extends ScrollPane {
         mostrarColumnas();
         mostrarContenido(contenido);
 
-      
-
         grid.setPadding(new Insets(20, 20, 20, 20));
         grid.setVgap(5);
         setContent(grid);
@@ -71,24 +69,25 @@ public class CenterPane extends ScrollPane {
     private void mostrarContenido(String[][] contenido) {
         int contadorX = 0;
         int contadorY = 1;
-        
-        System.out.println(contenido.length + " -- " + contenido[0].length);
-        
-        this.contenido = new Text[contenido.length][contenido[0].length];
-        for (int i = 0; i < contenido.length; i++) {
-            for (int j = 0; j < contenido[j].length; j++) {
 
-                this.contenido[i][j] = new Text(contenido[i][j]);
-                grid.add(this.contenido[i][j], contadorX, contadorY);
-                contadorX++;
-              //  if(j == 0)   System.out.println(contenido[i][0]);
+        //   System.out.println(contenido.length + " -- " + contenido[0].length);
+        if (contenido.length > 0) {
+            this.contenido = new Text[contenido.length][contenido[0].length];
+            for (int i = 0; i < contenido.length; i++) {
+                for (int j = 0; j < contenido[j].length; j++) {
 
+                    this.contenido[i][j] = new Text(contenido[i][j]);
+                    grid.add(this.contenido[i][j], contadorX, contadorY);
+                    contadorX++;
+                    //  if(j == 0)   System.out.println(contenido[i][0]);
+
+                }
+                if (contenido[i][0] == null) {
+                    break;
+                }
+                contadorX = 0;
+                contadorY++;
             }
-            if (contenido[i][0] == null) {
-                break;
-            }
-            contadorX = 0;
-            contadorY++;
         }
 
     }

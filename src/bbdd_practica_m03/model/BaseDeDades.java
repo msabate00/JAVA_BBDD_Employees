@@ -110,23 +110,26 @@ public class BaseDeDades {
     public String[][] findByName(String name) throws SQLException {
         connect();
 //SELECT *, ...FROM table_name WHERE columnN LIKE pattern;
+        if (name.length() >= 3) {
+            try (ResultSet rs = statement.executeQuery("SELECT * FROM employees WHERE first_name LIKE '%" + name + "%' ORDER BY emp_no DESC")) {
+                rs.last();
+                String[][] result = new String[rs.getRow()][columnasTotales];
+                rs.first();
 
-        try (ResultSet rs = statement.executeQuery("SELECT * FROM employees WHERE first_name LIKE '%" + name + "%' ORDER BY emp_no DESC")) {
-            rs.last();
-            String[][] result = new String[rs.getRow()][columnasTotales];
-            rs.first();
+                for (int i = 0; i < result.length; i++) {
 
-            for (int i = 0; i < result.length; i++) {
-
-                for (int j = 1; j < columnasTotales + 1; j++) {
-                    result[i][j - 1] = rs.getString(j);
+                    for (int j = 1; j < columnasTotales + 1; j++) {
+                        result[i][j - 1] = rs.getString(j);
+                    }
+                    rs.next();
                 }
-                rs.next();
-            }
-            rs.last();
-            disconnect();
+                rs.last();
+                disconnect();
 
-            return result;
+                return result;
+            }
+        }else{
+            return null;
         }
     }
 
