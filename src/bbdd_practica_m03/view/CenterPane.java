@@ -35,12 +35,13 @@ public class CenterPane extends ScrollPane {
         mostrarColumnas();
         mostrarContenido(contenido);
 
-        setFitToHeight(true);
-        setFitToWidth(true);
+      
 
         grid.setPadding(new Insets(20, 20, 20, 20));
         grid.setVgap(5);
         setContent(grid);
+        setFitToHeight(true);
+        setFitToWidth(true);
 
     }
 
@@ -70,6 +71,9 @@ public class CenterPane extends ScrollPane {
     private void mostrarContenido(String[][] contenido) {
         int contadorX = 0;
         int contadorY = 1;
+        
+        System.out.println(contenido.length + " -- " + contenido[0].length);
+        
         this.contenido = new Text[contenido.length][contenido[0].length];
         for (int i = 0; i < contenido.length; i++) {
             for (int j = 0; j < contenido[j].length; j++) {
@@ -77,6 +81,7 @@ public class CenterPane extends ScrollPane {
                 this.contenido[i][j] = new Text(contenido[i][j]);
                 grid.add(this.contenido[i][j], contadorX, contadorY);
                 contadorX++;
+              //  if(j == 0)   System.out.println(contenido[i][0]);
 
             }
             if (contenido[i][0] == null) {

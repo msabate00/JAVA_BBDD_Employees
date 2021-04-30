@@ -67,4 +67,39 @@ public class InsertPopup extends Dialog {
         return aceptar;
     }
 
+    /**
+     * @return the first_name
+     */
+    public TextField getFirst_name() {
+        return first_name;
+    }
+
+    /**
+     * @return the last_name
+     */
+    public TextField getLast_name() {
+        return last_name;
+    }
+
+    /**
+     * @return the gender
+     */
+    public ChoiceBox getGender() {
+        return gender;
+    }
+
+    /**
+     * @return the birth_date
+     */
+    public DatePicker getBirth_date() {
+        return birth_date;
+    }
+
+    /**
+     * @return the hire_date
+     */
+    public DatePicker getHire_date() {
+        return hire_date;
+    }
+
 }

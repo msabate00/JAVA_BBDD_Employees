@@ -7,6 +7,7 @@ package bbdd_practica_m03.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -109,13 +110,13 @@ public class BaseDeDades {
     public String[][] findByName(String name) throws SQLException {
         connect();
 //SELECT *, ...FROM table_name WHERE columnN LIKE pattern;
-       
-        
-        try (ResultSet rs = statement.executeQuery("SELECT * FROM employees WHERE first_name LIKE '%" + name + "%'")) {
+
+        try (ResultSet rs = statement.executeQuery("SELECT * FROM employees WHERE first_name LIKE '%" + name + "%' ORDER BY emp_no DESC")) {
             rs.last();
             String[][] result = new String[rs.getRow()][columnasTotales];
             rs.first();
-            for (int i = 0; i < getMostrarFilas(); i++) {
+
+            for (int i = 0; i < result.length; i++) {
 
                 for (int j = 1; j < columnasTotales + 1; j++) {
                     result[i][j - 1] = rs.getString(j);
@@ -124,9 +125,36 @@ public class BaseDeDades {
             }
             rs.last();
             disconnect();
-            
+
             return result;
         }
+    }
+
+    public Boolean insert(String[] datos) throws SQLException {
+        connect();
+
+        if (datos.length == 5) {
+
+            PreparedStatement st = connection.prepareStatement("INSERT INTO employees(emp_no, first_name, last_name, gender, birth_date, hire_date) VALUES (?, ?, ?, ?, ?, ?)");
+            ResultSet rs = statement.executeQuery("SELECT max(emp_no) FROM employees");
+            rs.first();
+
+            st.setInt(1, rs.getInt(1) + 1);
+            st.setString(2, datos[0]);
+            st.setString(3, datos[1]);
+            st.setString(4, datos[2]);
+            st.setString(5, datos[3]);
+            st.setString(6, datos[4]);
+
+            int files = st.executeUpdate();
+            if (files == 1) {
+                disconnect();
+                return true;
+            }
+        }
+        disconnect();
+        return false;
+
     }
 
     /**
