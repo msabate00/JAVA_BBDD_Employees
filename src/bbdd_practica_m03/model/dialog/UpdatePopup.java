@@ -79,6 +79,9 @@ public class UpdatePopup extends Dialog {
         pane.add(hire_date, 5, 1);
 
         pane.add(aceptar, 0, 2);
+        aceptar.setPrefWidth(140);
+        
+        
         pane.setPadding(new Insets(10));
         pane.getRowConstraints().add(new RowConstraints(25));
         pane.getRowConstraints().add(new RowConstraints(25));
