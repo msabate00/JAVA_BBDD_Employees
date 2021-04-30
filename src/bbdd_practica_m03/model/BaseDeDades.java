@@ -128,7 +128,7 @@ public class BaseDeDades {
 
                 return result;
             }
-        }else{
+        } else {
             return null;
         }
     }
@@ -158,6 +158,34 @@ public class BaseDeDades {
         disconnect();
         return false;
 
+    }
+
+    public Boolean delete(String id) throws SQLException {
+        connect();
+
+        if (id.length() >= 5) {
+
+            PreparedStatement st = connection.prepareStatement("DELETE FROM employees WHERE emp_no = ?");
+            PreparedStatement st2 = connection.prepareStatement("SELECT emp_no FROM employees WHERE emp_no = ?");
+            // ResultSet rs = statement.executeQuery("SELECT emp_no FROM employees WHERE emp_no");
+
+            st2.setInt(1, Integer.parseInt(id));
+
+            ResultSet rs = st2.executeQuery();
+
+            rs.last();
+
+            if (rs.getRow() > 0) {
+                st.setInt(1, Integer.parseInt(id));
+                int files = st.executeUpdate();
+                if (files == 1) {
+                    disconnect();
+                    return true;
+                }
+            }
+        }
+        disconnect();
+        return false;
     }
 
     /**

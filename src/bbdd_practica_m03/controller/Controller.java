@@ -3,6 +3,7 @@ package bbdd_practica_m03.controller;
 import bbdd_practica_m03.model.BaseDeDades;
 import bbdd_practica_m03.model.dialog.InsertPopup;
 import bbdd_practica_m03.model.Model;
+import bbdd_practica_m03.model.dialog.DeletePopup;
 import bbdd_practica_m03.model.dialog.Dialog;
 import bbdd_practica_m03.model.dialog.ErrorPopup;
 import bbdd_practica_m03.model.dialog.InfoPopup;
@@ -86,45 +87,90 @@ public class Controller {
             @Override
             public void handle(ActionEvent t) {
 
-                if (dialog != null && dialog.getStage().isShowing()) {
-                    dialog.getStage().close();
-                }
-                dialog = new InsertPopup();
-                InsertPopup aux = (InsertPopup) dialog;
-
-                String[] datos = new String[5];
-
-                aux.getAceptar().setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent t) {
-                        datos[0] = aux.getFirst_name().getText();
-                        datos[1] = aux.getLast_name().getText();
-                        datos[2] = aux.getGender().getSelectionModel().getSelectedItem().toString();
-                        datos[3] = aux.getBirth_date().getValue().toString();
-                        datos[4] = aux.getHire_date().getValue().toString();
-                        dialog.getStage().close();
-                        try {
-                            if (!bbdd.insert(datos)) {
-                                if (dialog != null && dialog.getStage().isShowing()) {
-                                    dialog.getStage().close();
-                                }
-                                dialog = new ErrorPopup("NO SE A PODIDO AÑADIR EL EMPLEADO");
-                            } else {
-                                if (dialog != null && dialog.getStage().isShowing()) {
-                                    dialog.getStage().close();
-                                }
-                                dialog = new InfoPopup("EL EMPLEADO SE A AÑADIDO CORRECTAMENTE");
-                            }
-
-                        } catch (SQLException ex) {
-                            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                });
+                insertTop();
 
             }
 
         });
 
+        view.getTopPane().getBuscaDelete().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                deleteTop();
+            }
+        });
+
     }
+
+    private void insertTop() {
+        if (dialog != null && dialog.getStage().isShowing()) {
+            dialog.getStage().close();
+        }
+        dialog = new InsertPopup();
+        InsertPopup aux = (InsertPopup) dialog;
+
+        String[] datos = new String[5];
+
+        aux.getAceptar().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                datos[0] = aux.getFirst_name().getText();
+                datos[1] = aux.getLast_name().getText();
+                datos[2] = aux.getGender().getSelectionModel().getSelectedItem().toString();
+                datos[3] = aux.getBirth_date().getValue().toString();
+                datos[4] = aux.getHire_date().getValue().toString();
+                dialog.getStage().close();
+                try {
+                    if (!bbdd.insert(datos)) {
+                        if (dialog != null && dialog.getStage().isShowing()) {
+                            dialog.getStage().close();
+                        }
+                        dialog = new ErrorPopup("NO SE A PODIDO AÑADIR EL EMPLEADO");
+                    } else {
+                        if (dialog != null && dialog.getStage().isShowing()) {
+                            dialog.getStage().close();
+                        }
+                        dialog = new InfoPopup("EL EMPLEADO SE A AÑADIDO CORRECTAMENTE");
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+
+    }
+
+    public void deleteTop() {
+
+        if (dialog != null && dialog.getStage().isShowing()) {
+            dialog.getStage().close();
+        }
+        dialog = new DeletePopup();
+        DeletePopup aux = (DeletePopup) dialog;
+
+        aux.getAceptar().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                dialog.getStage().close();
+                try {
+                    if (!bbdd.delete(aux.getId().getText())) {
+                        if (dialog != null && dialog.getStage().isShowing()) {
+                            dialog.getStage().close();
+                        }
+                        dialog = new ErrorPopup("NO SE A PODIDO ELIMINAR AL EMPLEADO");
+                    } else {
+                        if (dialog != null && dialog.getStage().isShowing()) {
+                            dialog.getStage().close();
+                        }
+                        dialog = new InfoPopup("EL EMPLEADO SE A ELIMINADO CORRECTAMENTE");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+
+    }
+
 }
